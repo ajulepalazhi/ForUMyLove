@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Special Surprise ❤️</title>
+    <style>
+        :root {
+            --purple: #6a1b9a;
+            --white: #ffffff;
+            --bg: #f3e5f5;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            touch-action: none; /* Prevents accidental zooming/scrolling */
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            width: 80%;
+            max-width: 320px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 { color: var(--purple); font-size: 1.5rem; margin-bottom: 30px; }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            min-height: 50px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        #yesBtn { background: var(--purple); color: white; z-index: 11; }
+
+        #noBtn {
+            background: #eee;
+            color: #999;
+            position: absolute; /* Needed for teleporting */
+            left: 55%; /* Initial position next to Yes */
+            transition: 0.1s ease-out;
+            z-index: 12;
+        }
+
+        #celebration { display: none; }
+        .photo { width: 100%; border-radius: 15px; margin-top: 15px; border: 3px solid var(--purple); }
+
+        .heart-fall {
+            position: fixed;
+            top: -10%;
+            user-select: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <h1>Will you be my Valentine? 💜</h1>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="showLove()">YES</button>
+            <button id="noBtn" 
+                onmouseover="moveBtn()" 
+                ontouchstart="moveBtn(event)" 
+                onclick="event.preventDefault()">No</button>
+        </div>
+    </div>
+
+    <div class="card" id="celebration">
+        <h1>I knew you'd say yes! 💜</h1>
+        <img class="photo" src="https://via.placeholder.com/400x500/9c27b0/ffffff?text=Our+Photo+Here" alt="Us">
+    </div>
+
+    <script>
+        function moveBtn(event) {
+            if(event) event.preventDefault(); // Stop the phone from actually clicking
+            
+            const btn = document.getElementById('noBtn');
+            
+            // Calculate random position while staying on screen
+            const maxX = window.innerWidth - btn.clientWidth - 20;
+            const maxY = window.innerHeight - btn.clientHeight - 20;
+            
+            const newX = Math.floor(Math.random() * maxX);
+            const newY = Math.floor(Math.random() * maxY);
+            
+            btn.style.position = 'fixed';
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+        }
+
+        function showLove() {
+            document.getElementById('mainCard').style.display = 'none';
+            document.getElementById('celebration').style.display = 'block';
+            setInterval(createHeart, 200);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-fall';
+            const colors = ['#9c27b0', '#e1bee7', '#ffffff'];
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+            heart.innerHTML = '💜';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
