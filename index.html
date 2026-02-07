@@ -3,14 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Special Message for You 💜</title>
+    <title>A Special Message 💜</title>
     <style>
-        :root {
-            --purple: #6a1b9a;
-            --white: #ffffff;
-            --accent: #9c27b0;
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -19,87 +13,56 @@
             justify-content: center;
             height: 100vh;
             background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
-            touch-action: none;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px 20px;
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            width: 85%;
-            max-width: 340px;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            width: 80%;
+            max-width: 320px;
             text-align: center;
             z-index: 10;
-            position: relative;
         }
 
-        h1 { 
-            color: var(--purple); 
-            font-size: 1.6rem; 
-            margin-bottom: 25px;
-            line-height: 1.3;
+        /* This ensures the celebration card is HIDDEN initially */
+        #celebration { 
+            display: none; 
         }
+
+        h1 { color: #6a1b9a; font-size: 1.5rem; margin-bottom: 25px; }
 
         .btn-container {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 20px;
-            min-height: 70px;
+            min-height: 60px;
             position: relative;
         }
 
         button {
-            padding: 14px 28px;
-            font-size: 1.1rem;
+            padding: 12px 25px;
+            font-size: 1rem;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.1s;
         }
 
-        #yesBtn {
-            background-color: var(--purple);
-            color: white;
-            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4);
-            z-index: 11;
-        }
+        #yesBtn { background: #6a1b9a; color: white; }
+        #noBtn { background: #eee; color: #888; position: absolute; left: 55%; transition: 0.1s; }
 
-        #noBtn {
-            background-color: #f0f0f0;
-            color: #888;
-            position: absolute;
-            left: 55%;
-            z-index: 12;
-            transition: 0.1s ease-out;
-        }
+        .photo { width: 100%; border-radius: 15px; margin-top: 15px; border: 3px solid #6a1b9a; }
 
-        #celebration { display: none; }
-        
-        .photo {
-            width: 100%;
-            border-radius: 20px;
-            margin-top: 15px;
-            border: 4px solid var(--purple);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* Heart Rain Animation */
         .heart-fall {
             position: fixed;
             top: -10%;
-            user-select: none;
-            z-index: 1;
             animation: fall linear forwards;
         }
-
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
+        @keyframes fall { to { transform: translateY(110vh); } }
     </style>
 </head>
 <body>
@@ -108,39 +71,29 @@
         <h1>Will you be my Valentine? 🌹</h1>
         <div class="btn-container">
             <button id="yesBtn" onclick="showLove()">YES</button>
-            <button id="noBtn" 
-                onmouseover="moveBtn()" 
-                ontouchstart="moveBtn(event)" 
-                onclick="event.preventDefault()">No</button>
+            <button id="noBtn" onmouseover="moveBtn()" ontouchstart="moveBtn(event)">No</button>
         </div>
     </div>
 
     <div class="card" id="celebration">
         <h1>I knew you'd say yes! 💜</h1>
-        <p style="color: #4a148c; font-weight: bold; margin-bottom: 10px;">You make my life beautiful.</p>
-        
         <img class="photo" src="us.jpg" alt="Our Picture">
-        
-        <p style="font-size: 0.9rem; margin-top: 20px; color: #7b1fa2;">Happy Valentine's Day! Forever yours. 🌹</p>
+        <p style="margin-top:15px; color:#4a148c;">Forever yours. 🌹</p>
     </div>
 
     <script>
         function moveBtn(event) {
             if(event) event.preventDefault();
             const btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed'; 
-
-            const maxX = window.innerWidth - btn.clientWidth - 30;
-            const maxY = window.innerHeight - btn.clientHeight - 30;
-            
-            const newX = Math.floor(Math.random() * maxX);
-            const newY = Math.floor(Math.random() * maxY);
-            
-            btn.style.left = newX + 'px';
-            btn.style.top = newY + 'px';
+            btn.style.position = 'fixed';
+            const x = Math.random() * (window.innerWidth - btn.clientWidth - 20);
+            const y = Math.random() * (window.innerHeight - btn.clientHeight - 20);
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
         }
 
         function showLove() {
+            // This HIDES the first card and SHOWS the second
             document.getElementById('mainCard').style.display = 'none';
             document.getElementById('celebration').style.display = 'block';
             setInterval(createHeart, 200);
@@ -149,173 +102,9 @@
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart-fall';
-            const colors = ['#9c27b0', '#e1bee7', '#ffffff', '#6a1b9a'];
-            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
             heart.innerHTML = '💜';
+            heart.style.color = ['#ffffff', '#e1bee7', '#ba68c8'][Math.floor(Math.random()*3)];
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Special Message for You 💜</title>
-    <style>
-        :root {
-            --purple: #6a1b9a;
-            --white: #ffffff;
-            --accent: #9c27b0;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            touch-action: none;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px 20px;
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            width: 85%;
-            max-width: 340px;
-            text-align: center;
-            z-index: 10;
-            position: relative;
-        }
-
-        h1 { 
-            color: var(--purple); 
-            font-size: 1.6rem; 
-            margin-bottom: 25px;
-            line-height: 1.3;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            min-height: 70px;
-            position: relative;
-        }
-
-        button {
-            padding: 14px 28px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        #yesBtn {
-            background-color: var(--purple);
-            color: white;
-            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4);
-            z-index: 11;
-        }
-
-        #noBtn {
-            background-color: #f0f0f0;
-            color: #888;
-            position: absolute;
-            left: 55%;
-            z-index: 12;
-            transition: 0.1s ease-out;
-        }
-
-        #celebration { display: none; }
-        
-        .photo {
-            width: 100%;
-            border-radius: 20px;
-            margin-top: 15px;
-            border: 4px solid var(--purple);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* Heart Rain Animation */
-        .heart-fall {
-            position: fixed;
-            top: -10%;
-            user-select: none;
-            z-index: 1;
-            animation: fall linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="card" id="mainCard">
-        <h1>Will you be my Valentine? 🌹</h1>
-        <div class="btn-container">
-            <button id="yesBtn" onclick="showLove()">YES</button>
-            <button id="noBtn" 
-                onmouseover="moveBtn()" 
-                ontouchstart="moveBtn(event)" 
-                onclick="event.preventDefault()">No</button>
-        </div>
-    </div>
-
-    <div class="card" id="celebration">
-        <h1>I knew you'd say yes! 💜</h1>
-        <p style="color: #4a148c; font-weight: bold; margin-bottom: 10px;">You make my life beautiful.</p>
-        
-        <img class="photo" src="us.jpg" alt="Our Picture">
-        
-        <p style="font-size: 0.9rem; margin-top: 20px; color: #7b1fa2;">Happy Valentine's Day! Forever yours. 🌹</p>
-    </div>
-
-    <script>
-        function moveBtn(event) {
-            if(event) event.preventDefault();
-            const btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed'; 
-
-            const maxX = window.innerWidth - btn.clientWidth - 30;
-            const maxY = window.innerHeight - btn.clientHeight - 30;
-            
-            const newX = Math.floor(Math.random() * maxX);
-            const newY = Math.floor(Math.random() * maxY);
-            
-            btn.style.left = newX + 'px';
-            btn.style.top = newY + 'px';
-        }
-
-        function showLove() {
-            document.getElementById('mainCard').style.display = 'none';
-            document.getElementById('celebration').style.display = 'block';
-            setInterval(createHeart, 200);
-        }
-
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart-fall';
-            const colors = ['#9c27b0', '#e1bee7', '#ffffff', '#6a1b9a'];
-            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-            heart.innerHTML = '💜';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 5000);
